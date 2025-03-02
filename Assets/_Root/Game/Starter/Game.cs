@@ -14,14 +14,7 @@ internal sealed class Game
     public void Update(float deltaTime)
     {
         _cards.Update(deltaTime);
-        _inputSystem.Update();
 
-        if (_inputSystem.CardClicked != null)
-        {
-            _inputSystem.CardClicked.Rotate();
-        }
-
-        _cards.UpdateUpSideCards();
         while (_cards.UpSideCards.Count >= 2)
         {
             Card FirstCard = _cards.UpSideCards.Pull();
@@ -36,6 +29,13 @@ internal sealed class Game
                 FirstCard.Rotate();
                 SecondCard.Rotate();
             }
+        }
+
+        _inputSystem.Update();
+
+        if (_inputSystem.CardClicked != null)
+        {
+            _inputSystem.CardClicked.Rotate();
         }
 
         if (_cards.IsEmpty())

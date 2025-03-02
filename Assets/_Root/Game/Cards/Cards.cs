@@ -43,21 +43,23 @@ internal sealed class Cards
 
     public void Update(float deltaTime)
     {
-        for (int i = 0; i < _list.Count; i++)
-        {
-            _list[i].Update(deltaTime);
-        }
-    }
-
-    public void UpdateUpSideCards()
-    {
         UpSideCards.Clear();
         for (int i = 0; i < _list.Count; i++)
         {
-            _list[i].UpdateStatus();
+            _list[i].Update(deltaTime);
             if (_list[i].IsUp) UpSideCards.Add(_list[i]);
         }
     }
+
+    //public void UpdateUpSideCards()
+    //{
+    //    UpSideCards.Clear();
+    //    for (int i = 0; i < _list.Count; i++)
+    //    {
+    //        _list[i].UpdateStatus();
+    //        if (_list[i].IsUp) UpSideCards.Add(_list[i]);
+    //    }
+    //}
 
     public void DestroyCard(Card card)
     {

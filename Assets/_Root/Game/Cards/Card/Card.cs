@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 internal sealed class Card
@@ -7,7 +6,7 @@ internal sealed class Card
     private const float UP_ANGLE = 180f;
     private const float DOWN_ANGLE = 0f;
 
-    private bool _isCreated = false;
+    public bool IsCreated = false;
     private CardView cardView;
     private GameObject _rootGameObject;
 
@@ -29,8 +28,9 @@ internal sealed class Card
 
         _currentZAngle = Mathf.MoveTowards(_currentZAngle, _targetZAngle, ROTATE_SPEED * deltaTime);
         float newYPosition = Mathf.Sin(Mathf.PI * _currentZAngle / 180f) / 2f;
+        UpdateStatus();
 
-        if (!_isCreated) return;
+        if (!IsCreated) return;
 
         cardView.ZRotator.localRotation = Quaternion.Euler(0, 0, _currentZAngle);
 
@@ -46,7 +46,7 @@ internal sealed class Card
         cardView = _rootGameObject.GetComponent<CardView>();
         cardView.Card = this;
         cardView.TextField.text = Value.ToString();
-        _isCreated = true;
+        IsCreated = true;
     }
 
     public void Destroy()
@@ -54,7 +54,7 @@ internal sealed class Card
         GameObject.Destroy(_rootGameObject);
         _rootGameObject = null;
         cardView = null;
-        _isCreated = false;
+        IsCreated = false;
     }
 
     public void Update(float deltaTime)
@@ -79,7 +79,7 @@ internal sealed class Card
         IsUp = (_currentZAngle == _targetZAngle && _targetZAngle == UP_ANGLE);
     }
 
-    public void UpdateStatus()
+    private void UpdateStatus()
     {
         UpdateIsUp();
     }

@@ -15,7 +15,11 @@ internal sealed class InputSystem
                 CardView cardView = hit.transform.GetComponentInParent<CardView>();
                 if (cardView != null)
                 {
-                    CardClicked = cardView.Card;
+                    if (cardView.Card.IsCreated)
+                    {
+                        CardClicked = cardView.Card;
+                    }
+                    
                 }
             }
         }
