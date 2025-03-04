@@ -5,6 +5,7 @@ internal sealed class Game
 {
     private Cards _cards = new();
     private InputSystem _inputSystem = new();
+    private Victory _victory = new();
 
     public void Start()
     {
@@ -40,7 +41,7 @@ internal sealed class Game
 
         if (_cards.IsEmpty())
         {
-            Debug.Log("Victory");
+            _victory.Instantiate();
         }
     }
 }
