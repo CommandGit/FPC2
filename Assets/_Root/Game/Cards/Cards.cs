@@ -20,25 +20,14 @@ internal sealed class Cards
 
     public void InstatiateCards()
     {
-        InstantiateCard(new Vector3(0f, 0f, 0f), 1);
-        InstantiateCard(new Vector3(1f, 0f, 0f), 1);
-        InstantiateCard(new Vector3(2f, 0f, 0f), 2);
-        InstantiateCard(new Vector3(3f, 0f, 0f), 2);
+        CardsGenerator cardsGenerator = new();
 
-        InstantiateCard(new Vector3(0, 0, 1.5f), 3);
-        InstantiateCard(new Vector3(1, 0, 1.5f), 3);
-        InstantiateCard(new Vector3(2, 0, 1.5f), 4);
-        InstantiateCard(new Vector3(3, 0, 1.5f), 4);
-
-        InstantiateCard(new Vector3(0f, 0f, 3f), 5);
-        InstantiateCard(new Vector3(1f, 0f, 3f), 5);
-        InstantiateCard(new Vector3(2f, 0f, 3f), 6);
-        InstantiateCard(new Vector3(3f, 0f, 3f), 6);
-
-        InstantiateCard(new Vector3(0, 0, 4.5f), 7);
-        InstantiateCard(new Vector3(1, 0, 4.5f), 7);
-        InstantiateCard(new Vector3(2, 0, 4.5f), 8);
-        InstantiateCard(new Vector3(3, 0, 4.5f), 8);
+        for (int i = 0; i < 16; i++)
+        {
+            Vector3 position = cardsGenerator.PullPosition();
+            int number = cardsGenerator.PullCardNumber();
+            InstantiateCard(position, number);
+        }
     }
 
     public void Update(float deltaTime)
@@ -50,16 +39,6 @@ internal sealed class Cards
             if (_list[i].IsUp) UpSideCards.Add(_list[i]);
         }
     }
-
-    //public void UpdateUpSideCards()
-    //{
-    //    UpSideCards.Clear();
-    //    for (int i = 0; i < _list.Count; i++)
-    //    {
-    //        _list[i].UpdateStatus();
-    //        if (_list[i].IsUp) UpSideCards.Add(_list[i]);
-    //    }
-    //}
 
     public void DestroyCard(Card card)
     {
