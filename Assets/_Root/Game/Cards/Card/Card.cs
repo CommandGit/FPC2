@@ -1,14 +1,12 @@
 using UnityEngine;
 
-internal sealed class Card
+internal sealed class Card : ViewController<CardView>
 {
+    private const string PREFAB_PATH = "Card";
+
     private const float ROTATE_SPEED = 360f;
     private const float UP_ANGLE = 180f;
     private const float DOWN_ANGLE = 0f;
-
-    public bool IsCreated = false;
-    private CardView cardView;
-    private GameObject _rootGameObject;
 
     private float _currentZAngle = DOWN_ANGLE;
     private float _targetZAngle = DOWN_ANGLE;
@@ -17,7 +15,7 @@ internal sealed class Card
 
     public int Value;
 
-    public Card(int value)
+    public Card(int value) : base(PREFAB_PATH)
     {
         Value = value;
     }
@@ -32,29 +30,18 @@ internal sealed class Card
 
         if (!IsCreated) return;
 
-        cardView.ZRotator.localRotation = Quaternion.Euler(0, 0, _currentZAngle);
+        _view.ZRotator.localRotation = Quaternion.Euler(0, 0, _currentZAngle);
 
-        Vector3 YPosition = cardView.YPosition.localPosition;
+        Vector3 YPosition = _view.YPosition.localPosition;
         YPosition.y = newYPosition;
-        cardView.YPosition.localPosition = YPosition;
+        _view.YPosition.localPosition = YPosition;
     }
 
     public void Instantiate(Vector3 position)
     {
-        GameObject prefab = Resources.Load<GameObject>("Card");
-        _rootGameObject = GameObject.Instantiate(prefab, position, Quaternion.identity);
-        cardView = _rootGameObject.GetComponent<CardView>();
-        cardView.Card = this;
-        cardView.TextField.text = Value.ToString();
-        IsCreated = true;
-    }
-
-    public void Destroy()
-    {
-        GameObject.Destroy(_rootGameObject);
-        _rootGameObject = null;
-        cardView = null;
-        IsCreated = false;
+        Instantiate(position, Quaternion.identity);
+        _view.Card = this;
+        _view.TextField.text = Value.ToString();
     }
 
     public void Update(float deltaTime)

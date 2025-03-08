@@ -1,19 +1,17 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-internal sealed class Victory
+internal sealed class Victory : ViewController<VictoryView>
 {
-    private bool _isCreated = false;
+    private const string PRAFAB_PATH = "Victory";
 
-    public void Instantiate()
+    public Victory() : base(PRAFAB_PATH)
     {
-        if (_isCreated) return;
 
-        GameObject prefab = Resources.Load<GameObject>("Victory");
-        GameObject go = GameObject.Instantiate(prefab);
-        VictoryView view = go.GetComponent<VictoryView>();
-        view.ButtonMainMenu.onClick.AddListener(ButtonMainMenuPressed);
-        _isCreated = true;
+    }
+    public override void Instantiate()
+    {
+        base.Instantiate();
+        _view.ButtonMainMenu.onClick.AddListener(ButtonMainMenuPressed);
     }
 
     private void ButtonMainMenuPressed()

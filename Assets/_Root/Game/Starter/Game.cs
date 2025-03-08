@@ -1,19 +1,36 @@
 using Extension;
-using UnityEngine;
 
 internal sealed class Game
 {
     private Cards _cards = new();
     private InputSystem _inputSystem = new();
     private Victory _victory = new();
+    private Timer _timer = new();
+    private GameState _state = GameState.None;
 
     public void Start()
     {
-        _cards.InstatiateCards();
+        StartPlaying();
     }
 
-    public void Update(float deltaTime)
+    private void StartPlaying()
     {
+        _cards.InstatiateCards();
+        _timer.Instantiate();
+        _timer.Start();
+        _state = GameState.Playing;
+    }
+
+    private void StartVictory()
+    {
+        _timer.Stop();
+        _victory.Instantiate();
+        _state = GameState.Victory;
+    }
+
+    private void Playing(float deltaTime)
+    {
+        _timer.Update(deltaTime);
         _cards.Update(deltaTime);
 
         while (_cards.UpSideCards.Count >= 2)
@@ -41,7 +58,13 @@ internal sealed class Game
 
         if (_cards.IsEmpty())
         {
-            _victory.Instantiate();
+            StartVictory();
         }
     }
+    public void Update(float deltaTime)
+    {
+        if (_state == GameState.Playing) Playing(deltaTime);
+    }
+
 }
+

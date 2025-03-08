@@ -1,15 +1,18 @@
-
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-internal sealed class MainMenu
+internal sealed class MainMenu : ViewController<MainMenuView>
 {
-    public void Show()
+    private const string PREFAB_PATH = "MainMenu";
+
+    public MainMenu() : base(PREFAB_PATH)
     {
-        GameObject prefab = Resources.Load<GameObject>("MainManu");
-        GameObject go = GameObject.Instantiate(prefab);
-        MainMenuView view = go.GetComponent<MainMenuView>();
-        view.ButtonStart.onClick.AddListener(ButtonStartPressed);
+
+    }
+
+    public override void Instantiate()
+    {
+        base.Instantiate();
+        _view.ButtonStart.onClick.AddListener(ButtonStartPressed);
     }
 
     private void ButtonStartPressed()
