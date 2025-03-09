@@ -14,6 +14,12 @@ internal sealed class Timer : ViewController<TimerView>
 
     }
 
+    public override void Instantiate()
+    {
+        base.Instantiate();
+        UpdateView();
+    }
+
     private void UpdateView()
     {
         TimeSpan interval = TimeSpan.FromSeconds(_seconds);

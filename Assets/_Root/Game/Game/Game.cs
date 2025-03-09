@@ -18,7 +18,7 @@ internal sealed class Game
     {
         _cards.InstatiateCards();
         _timer.Instantiate();
-        _timer.Start();
+        //_timer.Start();
         _moveCounter.Instantiate();
         _state = GameState.Playing;
     }
@@ -58,6 +58,10 @@ internal sealed class Game
             if (_inputSystem.CardClicked.IsDown)
             {
                 _moveCounter.Add();
+            }
+            if (_moveCounter.Counter == 1)
+            {
+                _timer.Start();
             }
             _inputSystem.CardClicked.Rotate();
         }
