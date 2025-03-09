@@ -7,6 +7,7 @@ internal sealed class Game
     private Victory _victory = new();
     private Timer _timer = new();
     private GameState _state = GameState.None;
+    private MoveCounter _moveCounter = new();
 
     public void Start()
     {
@@ -18,6 +19,7 @@ internal sealed class Game
         _cards.InstatiateCards();
         _timer.Instantiate();
         _timer.Start();
+        _moveCounter.Instantiate();
         _state = GameState.Playing;
     }
 
@@ -53,6 +55,10 @@ internal sealed class Game
 
         if (_inputSystem.CardClicked != null)
         {
+            if (_inputSystem.CardClicked.IsDown)
+            {
+                _moveCounter.Add();
+            }
             _inputSystem.CardClicked.Rotate();
         }
 

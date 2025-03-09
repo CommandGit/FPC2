@@ -12,6 +12,7 @@ internal sealed class Card : ViewController<CardView>
     private float _targetZAngle = DOWN_ANGLE;
 
     public bool IsUp = false;
+    public bool IsDown = true;
 
     public int Value;
 
@@ -66,8 +67,14 @@ internal sealed class Card : ViewController<CardView>
         IsUp = (_currentZAngle == _targetZAngle && _targetZAngle == UP_ANGLE);
     }
 
+    private void UpdateIsDown()
+    {
+        IsDown = (_currentZAngle == _targetZAngle && _targetZAngle == DOWN_ANGLE);
+    }
+
     private void UpdateStatus()
     {
         UpdateIsUp();
+        UpdateIsDown();
     }
 }
