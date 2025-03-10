@@ -1,4 +1,5 @@
 using Extension;
+using UnityEngine.SceneManagement;
 
 internal sealed class Game
 {
@@ -8,6 +9,7 @@ internal sealed class Game
     private Timer _timer = new();
     private GameState _state = GameState.None;
     private MoveCounter _moveCounter = new();
+    private Pause _pause = new();
 
     public void Start()
     {
@@ -16,11 +18,17 @@ internal sealed class Game
 
     private void StartPlaying()
     {
-        _cards.InstatiateCards();
-        _timer.Instantiate();
-        //_timer.Start();
-        _moveCounter.Instantiate();
-        _state = GameState.Playing;
+        if (_state == GameState.None)
+        {
+            _cards.InstatiateCards();
+            _timer.Instantiate();
+            _moveCounter.Instantiate();
+        }
+        else if (_state == GameState.Pause)
+        {
+            _pause.Destroy();
+        }
+        _state = GameState.Play;
     }
 
     private void StartVictory()
@@ -30,7 +38,27 @@ internal sealed class Game
         _state = GameState.Victory;
     }
 
-    private void Playing(float deltaTime)
+    private void StartPause()
+    {
+        _pause.Instantiate();
+        _state = GameState.Pause;
+    }
+
+    private void UpdatePause()
+    {
+        _inputSystem.Update();
+        _pause.Update();
+        if (_inputSystem.PauseClicked || _pause.ButtonResumePressed)
+        {
+            StartPlaying();
+        }
+        else if (_pause.ButtonMainMenuPressed)
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+    }
+
+    private void UpdatePlay(float deltaTime)
     {
         _timer.Update(deltaTime);
         _cards.Update(deltaTime);
@@ -70,10 +98,23 @@ internal sealed class Game
         {
             StartVictory();
         }
+
+        if (_inputSystem.PauseClicked)
+        {
+            StartPause();
+        }
     }
     public void Update(float deltaTime)
     {
-        if (_state == GameState.Playing) Playing(deltaTime);
+        if (_state == GameState.Play)
+        {
+            UpdatePlay(deltaTime);
+        }
+        else if (_state == GameState.Pause)
+        {
+            UpdatePause();
+        }
+
     }
 
 }

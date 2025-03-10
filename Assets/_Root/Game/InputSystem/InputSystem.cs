@@ -3,6 +3,7 @@ using UnityEngine;
 internal sealed class InputSystem
 {
     public Card CardClicked;
+    public bool PauseClicked = false;
 
     public void Update()
     {
@@ -19,5 +20,7 @@ internal sealed class InputSystem
                 }
             }
         }
+
+        PauseClicked = Input.GetKeyDown(KeyCode.Escape);
     }
 }

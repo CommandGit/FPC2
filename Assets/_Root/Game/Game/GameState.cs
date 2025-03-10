@@ -2,6 +2,7 @@
 internal enum GameState
 {
     None,
-    Playing,
+    Play,
+    Pause,
     Victory
 }
