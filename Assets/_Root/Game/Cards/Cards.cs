@@ -3,7 +3,7 @@ using UnityEngine;
 
 internal sealed class Cards
 {
-    public List<Card> UpSideCards = new();
+    private List<Card> _upSideCards = new();
     private List<Card> _list = new();
 
     public bool IsEmpty()
@@ -32,17 +32,37 @@ internal sealed class Cards
 
     public void Update(float deltaTime)
     {
-        UpSideCards.Clear();
+        _upSideCards.Clear();
         for (int i = 0; i < _list.Count; i++)
         {
             _list[i].Update(deltaTime);
-            if (_list[i].IsUp) UpSideCards.Add(_list[i]);
+            if (_list[i].IsUp) _upSideCards.Add(_list[i]);
         }
+        UpdateUpSideCards();
     }
 
     public void DestroyCard(Card card)
     {
         card.Destroy();
         _list.Remove(card);
+    }
+
+    private void UpdateUpSideCards()
+    {
+        while (_upSideCards.Count >= 2)
+        {
+            Card FirstCard = _upSideCards.Pull();
+            Card SecondCard = _upSideCards.Pull();
+            if (FirstCard.Value == SecondCard.Value)
+            {
+                DestroyCard(FirstCard);
+                DestroyCard(SecondCard);
+            }
+            else
+            {
+                FirstCard.Rotate();
+                SecondCard.Rotate();
+            }
+        }
     }
 }

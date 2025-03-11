@@ -1,4 +1,3 @@
-using Extension;
 using UnityEngine.SceneManagement;
 
 internal sealed class Game
@@ -62,23 +61,6 @@ internal sealed class Game
     {
         _timer.Update(deltaTime);
         _cards.Update(deltaTime);
-
-        while (_cards.UpSideCards.Count >= 2)
-        {
-            Card FirstCard = _cards.UpSideCards.Pull();
-            Card SecondCard = _cards.UpSideCards.Pull();
-            if (FirstCard.Value == SecondCard.Value)
-            {
-                _cards.DestroyCard(FirstCard);
-                _cards.DestroyCard(SecondCard);
-            }
-            else
-            {
-                FirstCard.Rotate();
-                SecondCard.Rotate();
-            }
-        }
-
         _inputSystem.Update();
 
         if (_inputSystem.CardClicked != null)
@@ -98,8 +80,7 @@ internal sealed class Game
         {
             StartVictory();
         }
-
-        if (_inputSystem.PauseClicked)
+        else if (_inputSystem.PauseClicked)
         {
             StartPause();
         }
