@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 internal sealed class Game
 {
     private InputSystem _inputSystem = new();
@@ -11,6 +13,8 @@ internal sealed class Game
 
     public void Start()
     {
+        new Table().Instantiate(new Vector3(0, -0.001f, 0), Quaternion.identity);
+
         _playState = new PlayState(_inputSystem);
         _pauseState = new PauseState(_inputSystem);
         _victoryState = new VictoryState();
